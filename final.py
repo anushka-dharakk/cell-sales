@@ -26,8 +26,8 @@ COLORS = {
 }
 
 st.set_page_config(
-    page_title="Warehouse Operations Dashboard",
-    page_icon="📦",
+    page_title="ATS Mahindra Cell Dashboard",
+    page_icon="ats_logo_img.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -335,7 +335,6 @@ selected_statuses = st.sidebar.multiselect(
     label_visibility='collapsed'
 )
 
-
 st.sidebar.markdown("""
 <p style="color: #E0E7F0; font-size: 12px; font-weight: 600; text-transform: uppercase; 
           letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 20px;">
@@ -369,7 +368,6 @@ if selected_statuses:
     infeed_filtered = infeed_filtered[infeed_filtered['INFEED_MISSION_STATUS'].isin(selected_statuses)]
     outfeed_filtered = outfeed_filtered[outfeed_filtered['OUTFEED_MISSION_STATUS'].isin(selected_statuses)]
     transfer_filtered = transfer_filtered[transfer_filtered['TRANSFER_MISSION_STATUS'].isin(selected_statuses)]
-
 
 if selected_months:
     def filter_by_month(df, date_column):
@@ -568,7 +566,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ========== CREATE TABS ==========
-tab1, tab2, tab3, tab4 = st.tabs(["📊 System Health", "🚀 Missions", "⚠️ Outlier Missions", "📦 Stock Dashboard"])
+tab1, tab2, tab3, tab4 = st.tabs(["System Health", "Missions", "Outlier Missions", "Stock Dashboard"])
 
 # ========== TAB 1: SYSTEM HEALTH ==========
 with tab1:
@@ -692,16 +690,27 @@ with tab1:
         ))
         
         fig_infeed_trend.update_layout(
-            height=350,
-            margin=dict(l=20, r=20, t=40, b=60),
-            paper_bgcolor='white',
-            plot_bgcolor='white',
-            xaxis=dict(showgrid=False, title='Month', tickangle=-45),
-            yaxis=dict(type='log', showgrid=True, gridcolor='#E0E0E0', 
-                      title='Downtime % (Log Scale)', tickformat='.2f'),
-            showlegend=False,
-            font=dict(family="Times New Roman, Times, serif", size=11)
+        height=350,
+        margin=dict(l=20, r=20, t=40, b=60),
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        xaxis=dict(
+        showgrid=False,
+        title='Month',
+        tickangle=-45
+        ),
+        yaxis=dict(
+        type='log',
+        showgrid=True,
+        gridcolor='#E0E0E0',
+        title='Downtime % (log scale)',
+        tickvals=[0.01, 0.05, 0.1, 0.5, 1, 2],
+        ticktext=["0.01%", "0.05%", "0.1%", "0.5%", "1%", "2%"]
+        ),
+        showlegend=False,
+        font=dict(family="Times New Roman, Times, serif", size=11)
         )
+
         
         st.plotly_chart(fig_infeed_trend, use_container_width=True, config=PLOT_CONFIG)
     with col2:
